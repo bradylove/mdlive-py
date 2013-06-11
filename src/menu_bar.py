@@ -53,6 +53,15 @@ class MenuBar(Gtk.MenuBar):
     def view_submenu(self):
         view_menu = Gtk.Menu()
 
+        toggle_preview_menu_item = Gtk.MenuItem(label="Hide Preview")
+        toggle_editor_menu_item  = Gtk.MenuItem(label="Hide Editor")
+
+        view_menu.add(toggle_preview_menu_item)
+        view_menu.add(toggle_editor_menu_item)
+
+        toggle_preview_menu_item.connect("activate", self.on_toggle_preview_activate)
+        toggle_editor_menu_item.connect("activate", self.on_toggle_editor_activate)
+
         return view_menu
 
     def help_submenu(self):
@@ -69,3 +78,23 @@ class MenuBar(Gtk.MenuBar):
 
     def on_save_menu_activate(self, menu_item):
         print("Save it like its hot")
+
+    def on_toggle_preview_activate(self, menu_item):
+        text = menu_item.get_label()
+
+        if text == "Hide Preview":
+            self.parent.preview.hide()
+            menu_item.set_label("Show Preview")
+        elif text == "Show Preview":
+            self.parent.preview.show()
+            menu_item.set_label("Hide Preview")
+
+    def on_toggle_editor_activate(self, menu_item):
+        text = menu_item.get_label()
+
+        if text == "Hide Editor":
+            self.parent.editor.hide()
+            menu_item.set_label("Show Editor")
+        elif text == "Show Editor":
+            self.parent.editor.show()
+            menu_item.set_label("Hide Editor")

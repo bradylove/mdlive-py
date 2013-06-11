@@ -27,11 +27,11 @@ class MainWindow(Gtk.Window):
         self.editor = Gtk.TextView()
         self.editor_buffer = self.editor.get_buffer()
 
-        self.webview = WebKit.WebView()
-        self.webview.open("http://google.com")
+        self.preview = WebKit.WebView()
+        self.preview.open("http://google.com")
 
         self.split_box.add1(self.editor)
-        self.split_box.add2(self.webview)
+        self.split_box.add2(self.preview)
 
         self.box.pack_start(self.menu_bar, False, False, 0)
         self.box.pack_start(self.split_box, True, True, 0)

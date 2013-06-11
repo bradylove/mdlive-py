@@ -13,10 +13,7 @@ class FileOpener():
         response = dialog.run()
 
         if response == Gtk.ResponseType.OK:
-            print("File selected: " + dialog.get_filename())
             self.open_file(dialog.get_filename())
-        elif response == Gtk.ResponseType.CANCEL:
-            print("Cancel clicked")
 
         dialog.destroy()
 
