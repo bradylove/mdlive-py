@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from gi.repository import Gtk
 from main_window import MainWindow
 

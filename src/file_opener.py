@@ -38,3 +38,5 @@ class FileOpener():
 
         buffer.delete(start, end)
         buffer.set_text(text, len(text))
+
+        self.parent.render_markdown()
