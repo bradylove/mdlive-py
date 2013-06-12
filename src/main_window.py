@@ -32,16 +32,16 @@ class MainWindow(Gtk.Window):
 
         self.editor = Gtk.TextView()
         self.editor_buffer = self.editor.get_buffer()
-        editor_scroller = Gtk.ScrolledWindow()
-        editor_scroller.add(self.editor)
+        self.editor_scroller = Gtk.ScrolledWindow()
+        self.editor_scroller.add(self.editor)
 
         self.preview = WebKit.WebView()
         self.preview.open("file://" + self.installed_path() + "/assets/index.html")
-        preview_scroller = Gtk.ScrolledWindow()
-        preview_scroller.add(self.preview)
+        self.preview_scroller = Gtk.ScrolledWindow()
+        self.preview_scroller.add(self.preview)
 
-        self.split_box.add1(editor_scroller)
-        self.split_box.add2(preview_scroller)
+        self.split_box.add1(self.editor_scroller)
+        self.split_box.add2(self.preview_scroller)
 
         self.box.pack_start(self.menu_bar, False, False, 0)
         self.box.pack_start(self.split_box, True, True, 0)

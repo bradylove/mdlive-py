@@ -3,7 +3,13 @@
 ## Requirements
 
 ```
-[sudo] pip install misaka
-[sudo] pip install pygments
-[sudo] pip install houdini.py
+$ [sudo] pip install misaka
+$ [sudo] pip install pygments
+$ [sudo] pip install houdini.py
+```
+
+## Usage
+
+```
+$ ./src/mdlive
 ```

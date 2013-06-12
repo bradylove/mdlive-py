@@ -1,5 +1,6 @@
 from gi.repository import Gtk
 from file_opener import FileOpener
+from file_saver import FileSaver
 from about_dialog import AboutDialog
 
 class MenuBar(Gtk.MenuBar):
@@ -78,29 +79,27 @@ class MenuBar(Gtk.MenuBar):
         FileOpener(self.parent)
 
     def on_save_menu_activate(self, menu_item):
-        print("Save it like its hot")
+        FileSaver(self.parent)
 
     def on_toggle_preview_activate(self, menu_item):
         text = menu_item.get_label()
 
         if text == "Hide Preview":
-            self.parent.preview.hide()
+            self.parent.preview_scroller.hide()
             menu_item.set_label("Show Preview")
         elif text == "Show Preview":
-            self.parent.preview.show()
+            self.parent.preview_scroller.show()
             menu_item.set_label("Hide Preview")
 
     def on_toggle_editor_activate(self, menu_item):
         text = menu_item.get_label()
 
         if text == "Hide Editor":
-            self.parent.editor.hide()
+            self.parent.editor_scroller.hide()
             menu_item.set_label("Show Editor")
         elif text == "Show Editor":
-            self.parent.editor.show()
+            self.parent.editor_scroller.show()
             menu_item.set_label("Hide Editor")
 
     def on_about_menu_activate(self, menu_item):
         AboutDialog(self.parent)
-
-        # AboutDialog(self.parent)
