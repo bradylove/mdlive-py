@@ -1,7 +1,6 @@
 from gi.repository import Gtk
 from file_opener import FileOpener
-
-import pdb
+from about_dialog import AboutDialog
 
 class MenuBar(Gtk.MenuBar):
     def __init__(self, parent):
@@ -71,6 +70,8 @@ class MenuBar(Gtk.MenuBar):
 
         help_menu.add(about_menu_item)
 
+        about_menu_item.connect("activate", self.on_about_menu_activate)
+
         return help_menu
 
     def on_open_menu_activate(self, menu_item):
@@ -98,3 +99,8 @@ class MenuBar(Gtk.MenuBar):
         elif text == "Show Editor":
             self.parent.editor.show()
             menu_item.set_label("Hide Editor")
+
+    def on_about_menu_activate(self, menu_item):
+        AboutDialog(self.parent)
+
+        # AboutDialog(self.parent)

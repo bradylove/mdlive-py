@@ -14,7 +14,7 @@ class MainWindow(Gtk.Window):
         Gtk.Window.__init__(self,
                             type=Gtk.WindowType.TOPLEVEL,
                             title="MDLive Markdown Editor")
-
+        self.version = "0.1.0"
         default_width  = 1280
         default_height = 720
 
