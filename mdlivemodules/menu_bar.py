@@ -1,7 +1,7 @@
 from gi.repository import Gtk
-from file_opener import FileOpener
-from file_saver import FileSaver
-from about_dialog import AboutDialog
+from mdlivemodules.file_opener import FileOpener
+from mdlivemodules.file_saver import FileSaver
+from mdlivemodules.about_dialog import AboutDialog
 
 class MenuBar(Gtk.MenuBar):
     def __init__(self, parent):

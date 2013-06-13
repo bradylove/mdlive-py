@@ -1,13 +1,13 @@
 from gi.repository import Gtk
 from gi.repository import WebKit
-from menu_bar import MenuBar
-from renderer import Renderer
+from mdlivemodules.menu_bar import MenuBar
+from mdlivemodules.renderer import Renderer
 from misaka import Markdown
+
 import misaka
 import houdini
 
-import module_locator
-import re
+import re, os
 
 class MainWindow(Gtk.Window):
     def __init__(self):
@@ -70,4 +70,8 @@ class MainWindow(Gtk.Window):
         self.preview.execute_script("window.App.setHtml('" + escaped + "')")
 
     def installed_path(self):
-        return module_locator.module_path(self.installed_path)
+        root = __file__
+        if os.path.islink(root):
+            root = os.path.realpath(root)
+        return os.path.dirname(os.path.abspath(root))
+        # return module_locator.module_path(self.installed_path)
