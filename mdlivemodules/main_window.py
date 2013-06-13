@@ -31,6 +31,8 @@ class MainWindow(Gtk.Window):
 
 
         self.editor = Gtk.TextView()
+        self.editor.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
+
         self.editor_buffer = self.editor.get_buffer()
         self.editor_scroller = Gtk.ScrolledWindow()
         self.editor_scroller.add(self.editor)
