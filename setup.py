@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+# from distutils.core import setup
+from setuptools import setup
 
-assets = ["assets/**/*"]
+assets = ["assets/*"]
 
 setup(name="MDLive",
       version="0.1.0",
@@ -12,4 +13,5 @@ setup(name="MDLive",
       url="https://github.com/bradylove/mdlive",
       packages=['mdlivemodules'],
       package_data={'mdlivemodules': assets},
-      scripts=["mdlive"])
+      scripts=["mdlive"],
+      install_requires = ["pygments", "misaka", "houdini.py"])
