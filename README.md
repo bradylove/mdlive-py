@@ -1,5 +1,5 @@
-# MDLive Markdown Editor
-MDLive is a simple markdown editors that renders as you type. MDLive is currently just at the beginning 
+# MDLive Markdown Editor - 0.1.0
+MDLive is a simple markdown editors that renders as you type. MDLive is currently just at the beginning
 of its development, so if you run into any problems please file an issue and I will take a look at it ASAP.
 
 ### Installation
