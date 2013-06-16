@@ -3,50 +3,48 @@ import configparser
 import misaka
 
 class Settings():
-    def read_settings_file():
-        path = Settings.settings_file_path()
-        config = configparser.ConfigParser()
-        config.read(path)
+    def __init__(self):
+        self.path   = self.settings_file_path()
+        self.config = self.read_config()
 
-        return config
+    def read_config(self):
+        self.config = configparser.ConfigParser()
+        self.config.read(self.path)
 
-    def settings_file_path():
+        return self.config
+
+    def settings_file_path(self):
         home_dir = os.path.expanduser("~")
         path = os.path.join(home_dir, ".config", "mdlive", "settings")
 
         return path
+    def save_setting(self, group, setting, value):
+        self.config[group][setting] = str(value)
+        with open(self.path, 'w') as configfile:
+            self.config.write(configfile)
 
-    def save_setting(group, setting, value):
-        path = Settings.settings_file_path()
-        config = Settings.read_settings_file()
-        config[group][setting] = value
-        with open(path, 'w') as configfile:
-          config.write(configfile)
-
-
-
-    def get_extension_value(setting):
-        config = Settings.read_settings_file()
-        return config.getboolean("Markdown Extensions", setting)
-
-    def get_extensions_total():
+    def markdown_extensions(self):
+        self.read_config()
         x = 0
 
-        if Settings.get_extension_value("no_intra_emphasis"):
+        if self.get_extension_value("no_intra_emphasis"):
             x = x + misaka.EXT_NO_INTRA_EMPHASIS
-        if Settings.get_extension_value("tables"):
+        if self.get_extension_value("tables"):
             x = x + misaka.EXT_TABLES
-        if Settings.get_extension_value("fenced_code_blocks"):
+        if self.get_extension_value("fenced_code_blocks"):
             x = x + misaka.EXT_FENCED_CODE
-        if Settings.get_extension_value("autolink"):
+        if self.get_extension_value("autolink"):
             x = x + misaka.EXT_AUTOLINK
-        if Settings.get_extension_value("strikethrough"):
+        if self.get_extension_value("strikethrough"):
             x = x + misaka.EXT_STRIKETHROUGH
-        if Settings.get_extension_value("lax_html_blocks"):
+        if self.get_extension_value("lax_html_blocks"):
             x = x + misaka.EXT_LAX_HTML_BLOCKS
-        if Settings.get_extension_value("space_headers"):
+        if self.get_extension_value("space_headers"):
             x = x + misaka.EXT_SPACE_HEADERS
-        if Settings.get_extension_value("superscript"):
+        if self.get_extension_value("superscript"):
             x = x + misaka.EXT_SUPERSCRIPT
 
         return x
+
+    def get_extension_value(self, setting):
+        return self.config.getboolean("Markdown Extensions", setting)

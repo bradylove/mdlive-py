@@ -2,10 +2,14 @@ from gi.repository import Gtk
 from mdlivemodules.settings import Settings
 
 class SettingsWindow(Gtk.Window):
-    def __init__(self):
+    def __init__(self, main_window):
         Gtk.Window.__init__(self,
                             type=Gtk.WindowType.TOPLEVEL,
                             title="MDLive Settings")
+
+        self.main_window = main_window
+        self.settings = Settings()
+
         self.set_border_width(5)
 
         self.set_default_size(600, 400)
@@ -33,40 +37,30 @@ class SettingsWindow(Gtk.Window):
         self.box.pack_start(self.notebook, True, True, 5)
         self.box.pack_start(self.close_button, False, True, 0)
 
-        self.current_settings = Settings.read_settings_file()
-
         # Markdown Extentions
-        no_intra_emph_check = Gtk.CheckButton("No Intra Emphasis")
+        no_intra_emph_check = Gtk.CheckButton("No Intra Emphasis", active=self.get_extension_value("no_intra_emphasis"))
         no_intra_emph_check.connect("toggled", self.setting_toggled, "no_intra_emphasis")
-        no_intra_emph_check.set_active(self.get_extension_value("no_intra_emphasis"))
 
-        tables_check = Gtk.CheckButton("Tables")
+        tables_check = Gtk.CheckButton("Tables", active=self.get_extension_value("tables"))
         tables_check.connect("toggled", self.setting_toggled, "tables")
-        tables_check.set_active(self.get_extension_value("tables"))
 
-        fenced_code_check = Gtk.CheckButton("Fenced Code Blocks")
+        fenced_code_check = Gtk.CheckButton("Fenced Code Blocks", active=self.get_extension_value("fenced_code_blocks"))
         fenced_code_check.connect("toggled", self.setting_toggled, "fenced_code_blocks")
-        fenced_code_check.set_active(self.get_extension_value("fenced_code_blocks"))
 
-        autolink_check = Gtk.CheckButton("Autolinks")
+        autolink_check = Gtk.CheckButton("Autolinks", active=self.get_extension_value("autolink"))
         autolink_check.connect("toggled", self.setting_toggled, "autolink")
-        autolink_check.set_active(self.get_extension_value("autolink"))
 
-        strikethrough_check = Gtk.CheckButton("Strikethrough")
+        strikethrough_check = Gtk.CheckButton("Strikethrough", active=self.get_extension_value("strikethrough"))
         strikethrough_check.connect("toggled", self.setting_toggled, "strikethrough")
-        strikethrough_check.set_active(self.get_extension_value("strikethrough"))
 
-        lax_html_blocks_check = Gtk.CheckButton("Lax HTML Blocks")
+        lax_html_blocks_check = Gtk.CheckButton("Lax HTML Blocks", active=self.get_extension_value("lax_html_blocks"))
         lax_html_blocks_check.connect("toggled", self.setting_toggled, "lax_html_blocks")
-        lax_html_blocks_check.set_active(self.get_extension_value("lax_html_blocks"))
 
-        space_headers_check = Gtk.CheckButton("Space Headers")
+        space_headers_check = Gtk.CheckButton("Space Headers", active=self.get_extension_value("space_headers"))
         space_headers_check.connect("toggled", self.setting_toggled, "space_headers")
-        space_headers_check.set_active(self.get_extension_value("space_headers"))
 
-        superscript_check = Gtk.CheckButton("Superscript")
+        superscript_check = Gtk.CheckButton("Superscript", active=self.get_extension_value("superscript"))
         superscript_check.connect("toggled", self.setting_toggled, "superscript")
-        superscript_check.set_active(self.get_extension_value("superscript"))
 
         self.extensions_page.add(no_intra_emph_check)
         self.extensions_page.attach_next_to(tables_check,
@@ -95,8 +89,9 @@ class SettingsWindow(Gtk.Window):
 
     def setting_toggled(self, check_button, setting):
         value = check_button.get_active()
-        Settings.save_setting("Markdown Extensions", setting, str(value))
+        self.settings.save_setting("Markdown Extensions", setting, value)
+        self.main_window.update_markdown()
 
     def get_extension_value(self, setting):
-        b = self.current_settings.getboolean('Markdown Extensions', setting)
+        b = self.settings.get_extension_value(setting)
         return b

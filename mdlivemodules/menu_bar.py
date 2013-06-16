@@ -112,4 +112,4 @@ class MenuBar(Gtk.MenuBar):
         AboutDialog(self.parent)
 
     def on_edit_settings_activate(self, menu_item):
-        SettingsWindow()
+        SettingsWindow(self.parent)

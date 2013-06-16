@@ -19,6 +19,8 @@ class MainWindow(Gtk.Window):
         default_width  = 1280
         default_height = 720
 
+        self.settings = Settings()
+
         self.set_default_size(default_width, default_height)
         self.set_position(Gtk.WindowPosition.MOUSE)
 
@@ -29,7 +31,6 @@ class MainWindow(Gtk.Window):
 
         self.split_box = Gtk.HPaned()
         self.split_box.set_position(default_width / 2)
-
 
         self.editor = Gtk.TextView()
         self.editor.set_wrap_mode(Gtk.WrapMode.WORD_CHAR)
@@ -50,7 +51,7 @@ class MainWindow(Gtk.Window):
         self.box.pack_start(self.split_box, True, True, 0)
 
         self.renderer = Renderer()
-        self.markdown = Markdown(self.renderer, extensions=Settings.get_extensions_total())
+        self.markdown = Markdown(self.renderer, extensions=self.settings.markdown_extensions())
 
         self.editor_buffer.connect("end-user-action", self.on_buffer_end_user_action)
 
@@ -79,3 +80,7 @@ class MainWindow(Gtk.Window):
     def get_setting_value(self, setting):
         config = Settings.read_settings_file()
         config.getboolean("Markdown Extensions", setting)
+
+    def update_markdown(self):
+        self.markdown = Markdown(self.renderer, extensions=self.settings.markdown_extensions())
+        self.render_markdown()
