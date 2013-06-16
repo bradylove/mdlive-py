@@ -3,6 +3,7 @@ from gi.repository import WebKit
 from mdlivemodules.menu_bar import MenuBar
 from mdlivemodules.renderer import Renderer
 from misaka import Markdown
+from mdlivemodules.settings import Settings
 
 import misaka
 import houdini
@@ -49,10 +50,7 @@ class MainWindow(Gtk.Window):
         self.box.pack_start(self.split_box, True, True, 0)
 
         self.renderer = Renderer()
-        self.markdown = Markdown(self.renderer, extensions=
-                              misaka.EXT_FENCED_CODE |
-                              misaka.EXT_AUTOLINK |
-                              misaka.EXT_SPACE_HEADERS)
+        self.markdown = Markdown(self.renderer, extensions=Settings.get_extensions_total())
 
         self.editor_buffer.connect("end-user-action", self.on_buffer_end_user_action)
 
@@ -77,3 +75,7 @@ class MainWindow(Gtk.Window):
             root = os.path.realpath(root)
         return os.path.dirname(os.path.abspath(root))
         # return module_locator.module_path(self.installed_path)
+
+    def get_setting_value(self, setting):
+        config = Settings.read_settings_file()
+        config.getboolean("Markdown Extensions", setting)

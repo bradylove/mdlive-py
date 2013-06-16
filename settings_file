@@ -1,0 +1,19 @@
+[Markdown Extensions]
+no_intra_emphasis   = True
+php_markdown_tables = False
+fenced_code_blocks  = True
+autolink            = True
+strikethrough       = False
+lax_html_blocks     = False
+superscript         = False
+
+[HTML Render Flags]
+skip_html   = True
+skip_style  = True
+skip_images = False
+skip_links  = False
+safelink    = False
+toc         = False
+hardwrap    = True
+use_xhtml   = False
+escape      = False
