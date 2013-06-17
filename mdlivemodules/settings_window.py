@@ -10,6 +10,8 @@ class SettingsWindow(Gtk.Window):
         self.main_window = main_window
         self.settings = Settings()
 
+        self.connect("delete-event", self.hide_window)
+
         self.set_border_width(5)
 
         self.set_default_size(600, 400)
@@ -85,8 +87,6 @@ class SettingsWindow(Gtk.Window):
                                             space_headers_check,
                                             Gtk.PositionType.BOTTOM, 1, 2)
 
-        self.show_all()
-
     def setting_toggled(self, check_button, setting):
         value = check_button.get_active()
         self.settings.save_setting("Markdown Extensions", setting, value)
@@ -95,3 +95,6 @@ class SettingsWindow(Gtk.Window):
     def get_extension_value(self, setting):
         b = self.settings.get_extension_value(setting)
         return b
+
+    def hide_window(self, caller, arg):
+        self.hide_all()

@@ -2,7 +2,6 @@ from gi.repository import Gtk
 from mdlivemodules.file_opener import FileOpener
 from mdlivemodules.file_saver import FileSaver
 from mdlivemodules.about_dialog import AboutDialog
-from mdlivemodules.settings_window import SettingsWindow
 
 class MenuBar(Gtk.MenuBar):
     def __init__(self, parent):
@@ -112,4 +111,4 @@ class MenuBar(Gtk.MenuBar):
         AboutDialog(self.parent)
 
     def on_edit_settings_activate(self, menu_item):
-        SettingsWindow(self.parent)
+        self.parent.settings_window.show_all()

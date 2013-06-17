@@ -4,6 +4,7 @@ from mdlivemodules.menu_bar import MenuBar
 from mdlivemodules.renderer import Renderer
 from misaka import Markdown
 from mdlivemodules.settings import Settings
+from mdlivemodules.settings_window import SettingsWindow
 
 import misaka
 import houdini
@@ -20,6 +21,7 @@ class MainWindow(Gtk.Window):
         default_height = 720
 
         self.settings = Settings()
+        self.settings_window = SettingsWindow(self)
 
         self.set_default_size(default_width, default_height)
         self.set_position(Gtk.WindowPosition.MOUSE)
