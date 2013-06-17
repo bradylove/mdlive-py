@@ -9,8 +9,8 @@ class SettingsWindow(Gtk.Window):
 
         self.main_window = main_window
         self.settings = Settings()
-
-        self.connect("delete-event", self.hide_window)
+        self.set_modal(True)
+        self.set_transient_for(self.main_window)
 
         self.set_border_width(5)
 
@@ -23,10 +23,10 @@ class SettingsWindow(Gtk.Window):
         self.notebook = Gtk.Notebook()
         self.notebook.set_tab_pos(Gtk.PositionType.TOP)
 
-        self.extensions_page = Gtk.Grid()
+        self.extensions_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.extensions_label = Gtk.Label("Markdown Extensions")
 
-        self.render_flags_page = Gtk.Grid()
+        self.render_flags_page = Gtk.Box()
         self.render_flags_label = Gtk.Label("HTML Render Flags")
 
         self.notebook.append_page(self.extensions_page,
@@ -42,50 +42,37 @@ class SettingsWindow(Gtk.Window):
         # Markdown Extentions
         no_intra_emph_check = Gtk.CheckButton("No Intra Emphasis", active=self.get_extension_value("no_intra_emphasis"))
         no_intra_emph_check.connect("toggled", self.setting_toggled, "no_intra_emphasis")
+        self.extensions_page.pack_start(no_intra_emph_check, False, False, 0)
 
         tables_check = Gtk.CheckButton("Tables", active=self.get_extension_value("tables"))
         tables_check.connect("toggled", self.setting_toggled, "tables")
+        self.extensions_page.pack_start(tables_check, False, False, 0)
 
         fenced_code_check = Gtk.CheckButton("Fenced Code Blocks", active=self.get_extension_value("fenced_code_blocks"))
         fenced_code_check.connect("toggled", self.setting_toggled, "fenced_code_blocks")
+        self.extensions_page.pack_start(fenced_code_check, False, False, 0)
 
         autolink_check = Gtk.CheckButton("Autolinks", active=self.get_extension_value("autolink"))
         autolink_check.connect("toggled", self.setting_toggled, "autolink")
+        self.extensions_page.pack_start(autolink_check, False, False, 0)
 
         strikethrough_check = Gtk.CheckButton("Strikethrough", active=self.get_extension_value("strikethrough"))
         strikethrough_check.connect("toggled", self.setting_toggled, "strikethrough")
+        self.extensions_page.pack_start(strikethrough_check, False, False, 0)
 
         lax_html_blocks_check = Gtk.CheckButton("Lax HTML Blocks", active=self.get_extension_value("lax_html_blocks"))
         lax_html_blocks_check.connect("toggled", self.setting_toggled, "lax_html_blocks")
+        self.extensions_page.pack_start(lax_html_blocks_check, False, False, 0)
 
         space_headers_check = Gtk.CheckButton("Space Headers", active=self.get_extension_value("space_headers"))
         space_headers_check.connect("toggled", self.setting_toggled, "space_headers")
+        self.extensions_page.pack_start(space_headers_check, False, False, 0)
 
         superscript_check = Gtk.CheckButton("Superscript", active=self.get_extension_value("superscript"))
         superscript_check.connect("toggled", self.setting_toggled, "superscript")
+        self.extensions_page.pack_start(superscript_check, False, False, 0)
 
-        self.extensions_page.add(no_intra_emph_check)
-        self.extensions_page.attach_next_to(tables_check,
-                                            no_intra_emph_check,
-                                            Gtk.PositionType.BOTTOM, 1, 2)
-        self.extensions_page.attach_next_to(fenced_code_check,
-                                            tables_check,
-                                            Gtk.PositionType.BOTTOM, 1, 2)
-        self.extensions_page.attach_next_to(autolink_check,
-                                            fenced_code_check,
-                                            Gtk.PositionType.BOTTOM, 1, 2)
-        self.extensions_page.attach_next_to(strikethrough_check,
-                                            autolink_check,
-                                            Gtk.PositionType.BOTTOM, 1, 2)
-        self.extensions_page.attach_next_to(lax_html_blocks_check,
-                                            strikethrough_check,
-                                            Gtk.PositionType.BOTTOM, 1, 2)
-        self.extensions_page.attach_next_to(space_headers_check,
-                                            lax_html_blocks_check,
-                                            Gtk.PositionType.BOTTOM, 1, 2)
-        self.extensions_page.attach_next_to(superscript_check,
-                                            space_headers_check,
-                                            Gtk.PositionType.BOTTOM, 1, 2)
+        self.show_all()
 
     def setting_toggled(self, check_button, setting):
         value = check_button.get_active()
@@ -95,6 +82,3 @@ class SettingsWindow(Gtk.Window):
     def get_extension_value(self, setting):
         b = self.settings.get_extension_value(setting)
         return b
-
-    def hide_window(self, caller, arg):
-        self.hide_all()
