@@ -83,4 +83,5 @@ class MainWindow(Gtk.Window):
 
     def update_markdown(self):
         self.markdown = Markdown(self.renderer, extensions=self.settings.markdown_extensions())
+
         self.render_markdown()

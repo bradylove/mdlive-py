@@ -26,7 +26,7 @@ class SettingsWindow(Gtk.Window):
         self.extensions_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.extensions_label = Gtk.Label("Markdown Extensions")
 
-        self.render_flags_page = Gtk.Box()
+        self.render_flags_page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.render_flags_label = Gtk.Label("HTML Render Flags")
 
         self.notebook.append_page(self.extensions_page,
@@ -40,45 +40,45 @@ class SettingsWindow(Gtk.Window):
         self.box.pack_start(self.close_button, False, True, 0)
 
         # Markdown Extentions
-        no_intra_emph_check = Gtk.CheckButton("No Intra Emphasis", active=self.get_extension_value("no_intra_emphasis"))
-        no_intra_emph_check.connect("toggled", self.setting_toggled, "no_intra_emphasis")
-        self.extensions_page.pack_start(no_intra_emph_check, False, False, 0)
+        self.ext_check_button_for("no_intra_emphasis", "No Intra Emphasis")
+        self.ext_check_button_for("tables", "Tables")
+        self.ext_check_button_for("fenced_code_blocks", "Fenced Code Blocks")
+        self.ext_check_button_for("autolink", "Autolink")
+        self.ext_check_button_for("strikethrough", "Strikethrough")
+        self.ext_check_button_for("lax_html_blocks", "Lax HTML Blocks")
+        self.ext_check_button_for("space_headers", "Space Headers")
+        self.ext_check_button_for("superscript", "Superscript")
 
-        tables_check = Gtk.CheckButton("Tables", active=self.get_extension_value("tables"))
-        tables_check.connect("toggled", self.setting_toggled, "tables")
-        self.extensions_page.pack_start(tables_check, False, False, 0)
+        # HTML Render Flags
+        self.flag_check_button_for("skip_html", "Skip HTML")
+        self.flag_check_button_for("skip_style", "Skip Style")
+        self.flag_check_button_for("skip_images", "Skip Images")
+        self.flag_check_button_for("skip_links", "Skip Links")
+        self.flag_check_button_for("safelink", "Safelink")
+        self.flag_check_button_for("toc", "TOC")
+        self.flag_check_button_for("hardwrap", "Hard wrap")
+        self.flag_check_button_for("use_xhtml", "Use XHTML")
+        self.flag_check_button_for("escape", "Escape")
 
-        fenced_code_check = Gtk.CheckButton("Fenced Code Blocks", active=self.get_extension_value("fenced_code_blocks"))
-        fenced_code_check.connect("toggled", self.setting_toggled, "fenced_code_blocks")
-        self.extensions_page.pack_start(fenced_code_check, False, False, 0)
-
-        autolink_check = Gtk.CheckButton("Autolinks", active=self.get_extension_value("autolink"))
-        autolink_check.connect("toggled", self.setting_toggled, "autolink")
-        self.extensions_page.pack_start(autolink_check, False, False, 0)
-
-        strikethrough_check = Gtk.CheckButton("Strikethrough", active=self.get_extension_value("strikethrough"))
-        strikethrough_check.connect("toggled", self.setting_toggled, "strikethrough")
-        self.extensions_page.pack_start(strikethrough_check, False, False, 0)
-
-        lax_html_blocks_check = Gtk.CheckButton("Lax HTML Blocks", active=self.get_extension_value("lax_html_blocks"))
-        lax_html_blocks_check.connect("toggled", self.setting_toggled, "lax_html_blocks")
-        self.extensions_page.pack_start(lax_html_blocks_check, False, False, 0)
-
-        space_headers_check = Gtk.CheckButton("Space Headers", active=self.get_extension_value("space_headers"))
-        space_headers_check.connect("toggled", self.setting_toggled, "space_headers")
-        self.extensions_page.pack_start(space_headers_check, False, False, 0)
-
-        superscript_check = Gtk.CheckButton("Superscript", active=self.get_extension_value("superscript"))
-        superscript_check.connect("toggled", self.setting_toggled, "superscript")
-        self.extensions_page.pack_start(superscript_check, False, False, 0)
 
         self.show_all()
 
-    def setting_toggled(self, check_button, setting):
+    def flag_check_button_for(self, setting, label):
+        self.check_button_for(setting, label, self.render_flags_page, "HTML Render Flags")
+
+    def ext_check_button_for(self, setting, label):
+        self.check_button_for(setting, label, self.extensions_page, "Markdown Extensions")
+
+    def check_button_for(self, setting, label, page, group):
+        btn = Gtk.CheckButton(label, active=self.get_value(group, setting))
+        btn.connect("toggled", self.setting_toggled, group, setting)
+        page.pack_start(btn, False, False, 0)
+
+    def setting_toggled(self, check_button, group, setting):
         value = check_button.get_active()
-        self.settings.save_setting("Markdown Extensions", setting, value)
+        self.settings.save_setting(group, setting, value)
         self.main_window.update_markdown()
 
-    def get_extension_value(self, setting):
-        b = self.settings.get_extension_value(setting)
+    def get_value(self, group, setting):
+        b = self.settings.get_bool(group, setting)
         return b

@@ -46,5 +46,34 @@ class Settings():
 
         return x
 
+    def html_render_flags(self):
+        self.read_config()
+        x = 0
+
+        if self.get_html_flag_value("skip_html"):
+            x = x + misaka.HTML_SKIP_HTML
+        if self.get_html_flag_value("skip_style"):
+            x = x + misaka.HTML_SKIP_STYLE
+        if self.get_html_flag_value("skip_images"):
+            x = x + misaka.HTML_SKIP_IMAGES
+        if self.get_html_flag_value("skip_links"):
+            x = x + misaka.HTML_SKIP_LINKS
+        if self.get_html_flag_value("safelink"):
+            x = x + misaka.HTML_SKIP_LINKS
+        if self.get_html_flag_value("toc"):
+            x = x + misaka.HTML_TOC
+        if self.get_html_flag_value("hardwrap"):
+            x = x + misaka.HTML_HARD_WRAP
+        if self.get_html_flag_value("use_xhtml"):
+            x = x + misaka.HTML_USE_XHTML
+        if self.get_html_flag_value("escape"):
+            x = x + misaka.HTML_ESCAPE
+
+    def get_bool(self, group, setting):
+        return self.config.getboolean(group, setting)
+
+    def get_html_flag_value(self, setting):
+        return self.get_bool("HTML Render Flags", setting)
+
     def get_extension_value(self, setting):
-        return self.config.getboolean("Markdown Extensions", setting)
+        return self.get_bool("Markdown Extensions", setting)
