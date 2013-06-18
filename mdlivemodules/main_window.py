@@ -41,6 +41,9 @@ class MainWindow(Gtk.Window):
 
         self.preview = WebKit.WebView()
         self.preview.open("file://" + self.installed_path() + "/assets/index.html")
+        self.preview.props.settings.props.enable_default_context_menu = False
+        self.preview.connect("navigation-policy-decision-requested", self.handle_link_click)
+
         self.preview_scroller = Gtk.ScrolledWindow()
         self.preview_scroller.add(self.preview)
 
@@ -86,3 +89,7 @@ class MainWindow(Gtk.Window):
         self.markdown = Markdown(self.renderer, extensions=self.settings.markdown_extensions())
 
         self.render_markdown()
+
+    def handle_link_click(self, webview, frame, request, action, decision):
+        # Todo: Open in external browser
+        decision.ignore()
