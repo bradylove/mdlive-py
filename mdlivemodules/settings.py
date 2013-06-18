@@ -69,6 +69,8 @@ class Settings():
         if self.get_html_flag_value("escape"):
             x = x + misaka.HTML_ESCAPE
 
+        return x
+
     def get_bool(self, group, setting):
         return self.config.getboolean(group, setting)
 
